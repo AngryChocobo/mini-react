@@ -1,4 +1,8 @@
-const createElement = (tag: string | Function, props: any, children: any) => {
+const createElement = (
+  tag: string | Function,
+  props: any,
+  ...children: any
+) => {
   if (typeof tag === "function") {
     return tag(props, children);
   }
@@ -7,12 +11,25 @@ const createElement = (tag: string | Function, props: any, children: any) => {
     props,
     children,
   };
-  // console.log(type, props, children);
-  console.log(el);
   return el;
 };
 const render = (el: any, container: HTMLElement) => {
   // container.appendChild(el);
+  if (typeof el === "string") {
+    const element = document.createTextNode(el);
+    container.appendChild(element);
+    return;
+  }
+  const element = document.createElement(el.tag);
+  if (el.props) {
+    Object.keys(el.props).forEach((prop) => {
+      element[prop] = el.props[prop];
+    });
+  }
+  for (const child of el.children) {
+    render(child, element);
+  }
+  container.appendChild(element);
 };
 const React = {
   createElement,
@@ -20,7 +37,7 @@ const React = {
 };
 const App = (
   <div draggable>
-    <h2>Hello React!</h2>
+    <h2 className="h2-hello">Hello React!</h2>
     <p>I am a pargraph</p>
     <input type="text" />
   </div>

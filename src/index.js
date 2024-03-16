@@ -31,8 +31,12 @@ const React = {
     createElement,
     render,
 };
+const msg = "Hello World and ";
 const App = (React.createElement("div", { draggable: true },
-    React.createElement("h2", { className: "h2-hello" }, "Hello React!"),
+    React.createElement("h2", { className: "h2-hello" },
+        " ",
+        msg,
+        "Hello React!"),
     React.createElement("p", null, "I am a pargraph"),
     React.createElement("input", { type: "text" })));
 const Wrapper = () => {

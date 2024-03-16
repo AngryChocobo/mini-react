@@ -35,9 +35,10 @@ const React = {
   createElement,
   render,
 };
+const msg = "Hello World and ";
 const App = (
   <div draggable>
-    <h2 className="h2-hello">Hello React!</h2>
+    <h2 className="h2-hello"> {msg}Hello React!</h2>
     <p>I am a pargraph</p>
     <input type="text" />
   </div>

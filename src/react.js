@@ -27,22 +27,7 @@ const render = (el, container) => {
     }
     container.appendChild(element);
 };
-const React = {
+export const React = {
     createElement,
     render,
 };
-const msg = "Hello World and ";
-const App = (React.createElement("div", { draggable: true },
-    React.createElement("h2", { className: "h2-hello" },
-        " ",
-        msg,
-        "Hello React!"),
-    React.createElement("p", null, "I am a pargraph"),
-    React.createElement("input", { type: "text" })));
-const Wrapper = () => {
-    return (React.createElement("div", { className: "wrapper" },
-        React.createElement("div", { className: "content" }, "123")));
-};
-console.log(React.createElement(Wrapper, null));
-React.render(App, document.getElementById("app"));
-// const App = React.createElement("div", null, "Hello jsx!");

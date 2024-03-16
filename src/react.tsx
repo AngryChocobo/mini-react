@@ -32,7 +32,18 @@ const render = (el: any, container: HTMLElement) => {
   container.appendChild(element);
 };
 
+function useState<T extends any>(initialState: T) {
+  let state = initialState;
+  console.log("initialState is :", initialState);
+  const setState = (newState: T) => {
+    console.log("new State is: ", newState);
+    state = newState;
+  };
+  return [state, setState] as const;
+}
+
 export const React = {
   createElement,
   render,
+  useState,
 };

@@ -27,7 +27,17 @@ const render = (el, container) => {
     }
     container.appendChild(element);
 };
+function useState(initialState) {
+    let state = initialState;
+    console.log("initialState is :", initialState);
+    const setState = (newState) => {
+        console.log("new State is: ", newState);
+        state = newState;
+    };
+    return [state, setState];
+}
 export const React = {
     createElement,
     render,
+    useState,
 };

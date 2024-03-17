@@ -15,8 +15,8 @@ const createElement = (
 };
 const render = (el: any, container: HTMLElement) => {
   // container.appendChild(el);
-  if (typeof el === "string") {
-    const element = document.createTextNode(el);
+  if (typeof el === "string" || typeof el === "number") {
+    const element = document.createTextNode(el + "");
     container.appendChild(element);
     return;
   }
@@ -32,14 +32,22 @@ const render = (el: any, container: HTMLElement) => {
   container.appendChild(element);
 };
 
+const globalStateArray = [];
+window.stateCursor = 0;
+
 function useState<T extends any>(initialState: T) {
-  let state = initialState;
-  console.log("initialState is :", initialState);
+  let currentStateCursor = window.stateCursor;
+  globalStateArray[currentStateCursor] =
+    globalStateArray[currentStateCursor] || initialState;
+  console.log("initialState is :", globalStateArray[currentStateCursor]);
   const setState = (newState: T) => {
     console.log("new State is: ", newState);
-    state = newState;
+    globalStateArray[currentStateCursor] = newState;
+    document.getElementById("app").innerHTML = "";
+    (window as any).rerender();
   };
-  return [state, setState] as const;
+  window.stateCursor++;
+  return [globalStateArray[currentStateCursor], setState] as const;
 }
 
 export const React = {

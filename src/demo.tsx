@@ -61,7 +61,7 @@ function rerender() {
   window.stateCursor = 0;
   R.render(<TodoApp />, document.getElementById("app"));
 }
-(window as any).rerender = rerender;
+window.rerender = rerender;
 
 const root = R.createRoot(document.getElementById("app"));
 root.render(<TodoApp />);

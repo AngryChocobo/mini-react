@@ -23,7 +23,7 @@ describe("react", () => {
       window.stateCursor = 0;
       R.render(<App />, document.getElementById("app"));
     }
-    (window as any).rerender = rerender;
+    window.rerender = rerender;
     const root = R.createRoot(document.getElementById("app"));
     root.render(<App />);
     expect(
@@ -46,7 +46,7 @@ describe("react", () => {
       window.stateCursor = 0;
       R.render(<App />, document.getElementById("app"));
     }
-    (window as any).rerender = rerender;
+    window.rerender = rerender;
     const root = R.createRoot(document.getElementById("app"));
     root.render(<App />);
 
@@ -101,7 +101,7 @@ describe("react", () => {
       window.stateCursor = 0;
       R.render(<App />, document.getElementById("app"));
     }
-    (window as any).rerender = rerender;
+    window.rerender = rerender;
     const root = R.createRoot(document.getElementById("app"));
     root.render(<App />);
     const btn = document.querySelector("button");

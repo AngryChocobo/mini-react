@@ -71,7 +71,7 @@ function useState<T extends any>(initialState: T) {
     console.log("new State is: ", newState);
     globalStateArray[currentStateCursor] = newState;
     document.getElementById("app").innerHTML = "";
-    (window as any).rerender();
+    window.rerender();
   };
   window.stateCursor++;
   return [globalStateArray[currentStateCursor], setState] as const;

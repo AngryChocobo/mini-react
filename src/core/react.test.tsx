@@ -57,6 +57,33 @@ describe("react", () => {
     expect(mockFn).toBeCalledTimes(1);
   });
 
+  test("nested components", () => {
+    const Foo = () => <div className="foo">foo</div>;
+    const Bar = () => (
+      <div className="bar">
+        <Foo />
+      </div>
+    );
+
+    const App = () => (
+      <div id="wrapper">
+        <Foo />
+        <Bar />
+      </div>
+    );
+    const root = R.createRoot(document.getElementById("app"));
+    root.render(<App />);
+
+    const wrapper = document.querySelector("#wrapper") as HTMLDivElement;
+    expect(wrapper).toBeTruthy();
+    const foo = wrapper.querySelector(".foo");
+    expect(foo).toBeTruthy();
+    expect(foo.textContent).toBe("foo");
+    const bar = wrapper.querySelector(".bar");
+    expect(bar).toBeTruthy();
+    expect(bar.textContent).toBe("foo");
+  });
+
   test("useState", () => {
     const App = () => {
       const [msg, setMsg] = R.useState("Hello World and ");

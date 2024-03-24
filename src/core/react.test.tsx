@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 /** @jsx R.createVNode */
 /// <reference types="../global.d.ts" />
-import { expect, test, describe, afterEach, vi, beforeEach } from "vitest";
+import { expect, test, describe, vi, beforeEach } from "vitest";
 import { R } from "./react";
 
 describe("react", () => {

@@ -1,5 +1,5 @@
 /** @jsx R.createVNode */
-import { R } from "./core/react.js";
+import { R } from "./core/react";
 const Todo = ({ todo, handleToggleTodoStatus }) => {
   const style = todo.finished ? "text-decoration: line-through" : "";
   return (
@@ -36,6 +36,7 @@ const TodoApp = () => {
   };
   return (
     <div>
+      <p>提示：目前onchange需要input失焦以后再点击add按钮</p>
       <div>
         <input
           type="text"

@@ -1,4 +1,4 @@
-import { React } from "./react.js";
+import { React } from "./core/react.js";
 const App = () => {
   const [msg, setMsg] = React.useState("Hello World and ");
   const [count, setCount] = React.useState(1);

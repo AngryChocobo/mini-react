@@ -133,3 +133,4 @@ dist
 # tsc generated code 
 
 src/**/*.js
+src/*.js 

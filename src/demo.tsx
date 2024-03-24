@@ -1,11 +1,12 @@
-import { React } from "./core/react.js";
+/** @jsx R.createVNode */
+import { R } from "./core/react.js";
 const App = () => {
-  const [msg, setMsg] = React.useState("Hello World and ");
-  const [count, setCount] = React.useState(1);
-  const [value, setValue] = React.useState("123");
+  const [msg, setMsg] = R.useState("Hello World and ");
+  const [count, setCount] = R.useState(1);
+  const [value, setValue] = R.useState("123");
   return (
     <div draggable>
-      <h2 className="h2-hello">{msg}Hello React!</h2>
+      <h2 className="h2-hello">{msg}Hello R!</h2>
       <p>I am a pargraph</p>
       <input
         type="text"
@@ -20,9 +21,9 @@ const App = () => {
 function rerender() {
   // todo remove this ugly depenency
   window.stateCursor = 0;
-  React.render(<App />, document.getElementById("app"));
+  R.render(<App />, document.getElementById("app"));
 }
 (window as any).rerender = rerender;
 
-const root = React.createRoot(document.getElementById("app"));
+const root = R.createRoot(document.getElementById("app"));
 root.render(<App />);

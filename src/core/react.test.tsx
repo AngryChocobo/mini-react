@@ -1,20 +1,21 @@
 // @vitest-environment jsdom
+/** @jsx R.createVNode */
 import { expect, test, describe, afterEach } from "vitest";
-import { React } from "./react";
+import { R } from "./react";
 
 describe("react", () => {
   afterEach(() => {
     document.body.innerHTML = "";
   });
   test("Happy path", () => {
-    expect(React).toBeTruthy();
+    expect(R).toBeTruthy();
     const appRoot = document.createElement("div");
     appRoot.id = "app";
     document.body.appendChild(appRoot);
     const msg = "Hello World and ";
     const App = () => (
       <div draggable>
-        <h2 className="h2-hello">{msg}Hello React!</h2>
+        <h2 className="h2-hello">{msg}Hello R!</h2>
         <p>I am a pargraph</p>
         <input type="text" />
       </div>
@@ -22,7 +23,7 @@ describe("react", () => {
     function rerender() {
       // todo remove this ugly depenency
       window.stateCursor = 0;
-      React.render(<App />, appRoot);
+      R.render(<App />, appRoot);
     }
     (window as any).rerender = rerender;
     (window as any).rerender();
@@ -32,7 +33,7 @@ describe("react", () => {
     expect(
       appRoot
         .querySelector(".h2-hello")
-        .textContent.includes("Hello World and Hello React!")
+        .textContent.includes("Hello World and Hello R!")
     ).toBeTruthy();
   });
 
@@ -42,12 +43,12 @@ describe("react", () => {
     document.body.appendChild(appRoot);
 
     const App = () => {
-      const [msg, setMsg] = React.useState("Hello World and ");
-      const [count, setCount] = React.useState(1);
-      const [value, setValue] = React.useState("123");
+      const [msg, setMsg] = R.useState("Hello World and ");
+      const [count, setCount] = R.useState(1);
+      const [value, setValue] = R.useState("123");
       return (
         <div draggable>
-          <h2 className="h2-hello">{msg}Hello React!</h2>
+          <h2 className="h2-hello">{msg}Hello R!</h2>
           <p>I am a pargraph</p>
           <input
             type="text"
@@ -62,7 +63,7 @@ describe("react", () => {
     function rerender() {
       // todo remove this ugly depenency
       window.stateCursor = 0;
-      React.render(<App />, appRoot);
+      R.render(<App />, appRoot);
     }
     (window as any).rerender = rerender;
     (window as any).rerender();
@@ -75,7 +76,7 @@ describe("react", () => {
     expect(
       document
         .querySelector(".h2-hello")
-        .textContent.includes("Hello World and Hello React!")
+        .textContent.includes("Hello World and Hello R!")
     ).toBeTruthy();
     btn.click();
     const btn2 = document.querySelector("button");
@@ -83,7 +84,7 @@ describe("react", () => {
     expect(
       appRoot
         .querySelector(".h2-hello")
-        .textContent.includes("Hello World and Hello React!")
+        .textContent.includes("Hello World and Hello R!")
     ).toBeTruthy();
   });
 });

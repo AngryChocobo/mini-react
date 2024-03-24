@@ -1,32 +1,35 @@
-const createElement = (
-  tag: string | Function,
-  props: any,
-  ...children: any
-) => {
+export type VNode = any;
+
+const createVNode = (tag: string | Function, props: any, ...children: any) => {
   if (typeof tag === "function") {
     return tag(props, children);
   }
-  const el = {
+  const vnode: VNode = {
     tag,
     props,
     children,
   };
-  return el;
+  return vnode;
 };
-const render = (el: any, container: HTMLElement) => {
+
+const assignProps = (element: HTMLElement, vnode: VNode) => {
+  if (vnode.props) {
+    Object.keys(vnode.props).forEach((prop) => {
+      element[prop] = vnode.props[prop];
+    });
+  }
+};
+const render = (vnode: VNode, container: HTMLElement) => {
   // container.appendChild(el);
-  if (typeof el === "string" || typeof el === "number") {
-    const element = document.createTextNode(el + "");
+  if (typeof vnode === "string" || typeof vnode === "number") {
+    const element = document.createTextNode(vnode + "");
     container.appendChild(element);
     return;
   }
-  const element = document.createElement(el.tag);
-  if (el.props) {
-    Object.keys(el.props).forEach((prop) => {
-      element[prop] = el.props[prop];
-    });
-  }
-  for (const child of el.children) {
+  const element = document.createElement(vnode.tag);
+  assignProps(element, vnode);
+
+  for (const child of vnode.children) {
     render(child, element);
   }
   container.appendChild(element);
@@ -52,14 +55,14 @@ function useState<T extends any>(initialState: T) {
 
 const createRoot = (container: HTMLElement) => {
   return {
-    render: (component: any) => {
-      React.render(component, container);
+    render: (vnode: VNode) => {
+      R.render(vnode, container);
     },
   };
 };
 
-export const React = {
-  createElement,
+export const R = {
+  createVNode,
   render,
   useState,
   createRoot,

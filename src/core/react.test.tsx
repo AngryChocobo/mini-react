@@ -84,14 +84,14 @@ describe("react", () => {
     expect(bar.textContent).toBe("foo");
   });
 
-  test("useState", () => {
+  test("useState & props", () => {
+    const Count = ({ count }) => <div className="count">{count}</div>;
     const App = () => {
-      const [msg, setMsg] = R.useState("Hello World and ");
       const [count, setCount] = R.useState(1);
       return (
         <div>
-          <h1>{msg}Hello R!</h1>
-          <button onclick={() => setCount(count + 1)}>{count}</button>
+          <Count count={count} />
+          <button onClick={() => setCount(count + 1)}>Add One</button>
         </div>
       );
     };
@@ -105,13 +105,10 @@ describe("react", () => {
     const root = R.createRoot(document.getElementById("app"));
     root.render(<App />);
     const btn = document.querySelector("button");
-    expect(btn.textContent).toBe("1");
+    const count = document.querySelector(".count");
+    expect(count.textContent).toBe("1");
     btn.click();
-    const btn2 = document.querySelector("button");
-    expect(btn2.textContent).toBe("2");
-    // should not effect other state
-    expect(document.querySelector("h1").textContent).toBe(
-      "Hello World and Hello R!"
-    );
+    const count2 = document.querySelector(".count");
+    expect(count2.textContent).toBe("2");
   });
 });

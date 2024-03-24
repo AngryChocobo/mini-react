@@ -1,17 +1,16 @@
 // @vitest-environment jsdom
 /** @jsx R.createVNode */
-import { expect, test, describe, afterEach, vi } from "vitest";
+/// <reference types="../global.d.ts" />
+import { expect, test, describe, afterEach, vi, beforeEach } from "vitest";
 import { R } from "./react";
 
 describe("react", () => {
-  afterEach(() => {
-    document.body.innerHTML = "";
+  beforeEach(() => {
+    // makesure each test case have a root container dom
+    document.body.innerHTML = "<div id='app'></div>";
   });
   test("Happy path", () => {
     expect(R).toBeTruthy();
-    const appRoot = document.createElement("div");
-    appRoot.id = "app";
-    document.body.appendChild(appRoot);
     const msg = "Hello World and ";
     const App = () => (
       <div draggable>
@@ -23,15 +22,14 @@ describe("react", () => {
     function rerender() {
       // todo remove this ugly depenency
       window.stateCursor = 0;
-      R.render(<App />, appRoot);
+      R.render(<App />, document.getElementById("app"));
     }
     (window as any).rerender = rerender;
-    (window as any).rerender();
-    expect(document.body.querySelector("input").getAttribute("type")).toBe(
-      "text"
-    );
+    const root = R.createRoot(document.getElementById("app"));
+    root.render(<App />);
+    expect(document.querySelector("input").getAttribute("type")).toBe("text");
     expect(
-      appRoot
+      document
         .querySelector(".h2-hello")
         .textContent.includes("Hello World and Hello R!")
     ).toBeTruthy();
@@ -44,18 +42,16 @@ describe("react", () => {
 
   test("should bind event listener", () => {
     const mockFn = vi.fn();
-    const appRoot = document.createElement("div");
-    appRoot.id = "app";
-    document.body.appendChild(appRoot);
-    const msg = "Hello World and ";
     const App = () => <button onClick={mockFn}></button>;
     function rerender() {
       // todo remove this ugly depenency
       window.stateCursor = 0;
-      R.render(<App />, appRoot);
+      R.render(<App />, document.getElementById("app"));
     }
     (window as any).rerender = rerender;
-    (window as any).rerender();
+    const root = R.createRoot(document.getElementById("app"));
+    root.render(<App />);
+
     const btnDom = document.querySelector("button");
     expect(mockFn).toBeCalledTimes(0);
     expect(btnDom).toBeTruthy();
@@ -64,10 +60,6 @@ describe("react", () => {
   });
 
   test("useState", () => {
-    const appRoot = document.createElement("div");
-    appRoot.id = "app";
-    document.body.appendChild(appRoot);
-
     const App = () => {
       const [msg, setMsg] = R.useState("Hello World and ");
       const [count, setCount] = R.useState(1);
@@ -89,11 +81,11 @@ describe("react", () => {
     function rerender() {
       // todo remove this ugly depenency
       window.stateCursor = 0;
-      R.render(<App />, appRoot);
+      R.render(<App />, document.getElementById("app"));
     }
     (window as any).rerender = rerender;
-    (window as any).rerender();
-    // console.log(document.body.innerHTML);
+    const root = R.createRoot(document.getElementById("app"));
+    root.render(<App />);
     const input = document.querySelector("input");
     expect(input.value).toBe("123");
 
@@ -108,7 +100,7 @@ describe("react", () => {
     const btn2 = document.querySelector("button");
     expect(btn2.textContent).toBe("2");
     expect(
-      appRoot
+      document
         .querySelector(".h2-hello")
         .textContent.includes("Hello World and Hello R!")
     ).toBeTruthy();

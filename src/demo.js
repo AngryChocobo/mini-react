@@ -10,6 +10,9 @@ const App = () => {
             "Hello R!"),
         R.createVNode("p", null, "I am a pargraph"),
         R.createVNode("input", { type: "text", value: value, onchange: (e) => setValue(e.target.value) }),
+        R.createVNode("button", { onClick: () => {
+                console.log("clicked");
+            } }, "\u70B9\u6211"),
         R.createVNode("button", { onclick: () => setCount(count + 1) }, count)));
 };
 function rerender() {

@@ -50,8 +50,17 @@ function useState<T extends any>(initialState: T) {
   return [globalStateArray[currentStateCursor], setState] as const;
 }
 
+const createRoot = (container: HTMLElement) => {
+  return {
+    render: (component: any) => {
+      React.render(component, container);
+    },
+  };
+};
+
 export const React = {
   createElement,
   render,
   useState,
+  createRoot,
 };

@@ -23,4 +23,6 @@ function rerender() {
   React.render(<App />, document.getElementById("app"));
 }
 (window as any).rerender = rerender;
-(window as any).rerender();
+
+const root = React.createRoot(document.getElementById("app"));
+root.render(<App />);

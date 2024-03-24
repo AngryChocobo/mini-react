@@ -3,16 +3,10 @@ import { R } from "./core/react.js";
 const App = () => {
     const [msg, setMsg] = R.useState("Hello World and ");
     const [count, setCount] = R.useState(1);
-    const [value, setValue] = R.useState("123");
-    return (R.createVNode("div", { draggable: true },
-        R.createVNode("h2", { className: "h2-hello" },
+    return (R.createVNode("div", null,
+        R.createVNode("h1", null,
             msg,
             "Hello R!"),
-        R.createVNode("p", null, "I am a pargraph"),
-        R.createVNode("input", { type: "text", value: value, onchange: (e) => setValue(e.target.value) }),
-        R.createVNode("button", { onClick: () => {
-                console.log("clicked");
-            } }, "\u70B9\u6211"),
         R.createVNode("button", { onclick: () => setCount(count + 1) }, count)));
 };
 function rerender() {

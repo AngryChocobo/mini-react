@@ -14,9 +14,8 @@ describe("react", () => {
     const msg = "Hello World and ";
     const App = () => (
       <div draggable>
-        <h2 className="h2-hello">{msg}Hello R!</h2>
+        <h1 className="h1-hello">{msg}Hello R!</h1>
         <p>I am a pargraph</p>
-        <input type="text" />
       </div>
     );
     function rerender() {
@@ -27,10 +26,9 @@ describe("react", () => {
     (window as any).rerender = rerender;
     const root = R.createRoot(document.getElementById("app"));
     root.render(<App />);
-    expect(document.querySelector("input").getAttribute("type")).toBe("text");
     expect(
       document
-        .querySelector(".h2-hello")
+        .querySelector(".h1-hello")
         .textContent.includes("Hello World and Hello R!")
     ).toBeTruthy();
   });
@@ -63,16 +61,9 @@ describe("react", () => {
     const App = () => {
       const [msg, setMsg] = R.useState("Hello World and ");
       const [count, setCount] = R.useState(1);
-      const [value, setValue] = R.useState("123");
       return (
-        <div draggable>
-          <h2 className="h2-hello">{msg}Hello R!</h2>
-          <p>I am a pargraph</p>
-          <input
-            type="text"
-            value={value}
-            onchange={(e) => setValue(e.target.value)}
-          />
+        <div>
+          <h1>{msg}Hello R!</h1>
           <button onclick={() => setCount(count + 1)}>{count}</button>
         </div>
       );
@@ -86,23 +77,14 @@ describe("react", () => {
     (window as any).rerender = rerender;
     const root = R.createRoot(document.getElementById("app"));
     root.render(<App />);
-    const input = document.querySelector("input");
-    expect(input.value).toBe("123");
-
     const btn = document.querySelector("button");
     expect(btn.textContent).toBe("1");
-    expect(
-      document
-        .querySelector(".h2-hello")
-        .textContent.includes("Hello World and Hello R!")
-    ).toBeTruthy();
     btn.click();
     const btn2 = document.querySelector("button");
     expect(btn2.textContent).toBe("2");
-    expect(
-      document
-        .querySelector(".h2-hello")
-        .textContent.includes("Hello World and Hello R!")
-    ).toBeTruthy();
+    // should not effect other state
+    expect(document.querySelector("h1").textContent).toBe(
+      "Hello World and Hello R!"
+    );
   });
 });

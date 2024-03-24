@@ -1,12 +1,56 @@
 /** @jsx R.createVNode */
 import { R } from "./core/react.js";
-const App = () => {
-  const [msg, setMsg] = R.useState("Hello World and ");
-  const [count, setCount] = R.useState(1);
+const Todo = ({ todo, handleToggleTodoStatus }) => {
+  const style = todo.finished ? "text-decoration: line-through" : "";
+  return (
+    <li style={style} onClick={() => handleToggleTodoStatus(todo.id)}>
+      {todo.content}
+    </li>
+  );
+};
+const TodoApp = () => {
+  const [search, setSearch] = R.useState("");
+  const [todos, setTodos] = R.useState([]);
+  const addTodo = () => {
+    if (search) {
+      setTodos([
+        ...todos,
+        {
+          id: Math.random(),
+          content: search,
+          finished: false,
+        },
+      ]);
+    }
+  };
+  const handleToggleTodoStatus = (id: number) => {
+    const targetIndex = todos.findIndex((v) => v.id === id);
+    if (targetIndex > -1) {
+      const copy = [...todos];
+      copy[targetIndex] = {
+        ...copy[targetIndex],
+        finished: !copy[targetIndex].finished,
+      };
+      setTodos(copy);
+    }
+  };
   return (
     <div>
-      <h1>{msg}Hello R!</h1>
-      <button onclick={() => setCount(count + 1)}>{count}</button>
+      <div>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button onClick={addTodo}>add</button>
+      </div>
+      <ul className="todo-list">
+        {todos.map((v) => {
+          return (
+            <Todo todo={v} handleToggleTodoStatus={handleToggleTodoStatus} />
+          );
+        })}
+      </ul>
     </div>
   );
 };
@@ -14,9 +58,9 @@ const App = () => {
 function rerender() {
   // todo remove this ugly depenency
   window.stateCursor = 0;
-  R.render(<App />, document.getElementById("app"));
+  R.render(<TodoApp />, document.getElementById("app"));
 }
 (window as any).rerender = rerender;
 
 const root = R.createRoot(document.getElementById("app"));
-root.render(<App />);
+root.render(<TodoApp />);

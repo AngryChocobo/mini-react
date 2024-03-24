@@ -4,7 +4,7 @@ export type VNode = any;
 
 const createVNode = (tag: string | Function, props: any, ...children: any) => {
   if (typeof tag === "function") {
-    return tag(props, children);
+    return tag(props ?? {}, children);
   }
   const vnode: VNode = {
     tag,
@@ -35,12 +35,21 @@ const assignEventListener = (element: HTMLElement, vnode: VNode) => {
 };
 
 const render = (vnode: VNode, container: HTMLElement) => {
+  // handle conmponent children
+  if (Array.isArray(vnode)) {
+    vnode.forEach((item) => {
+      render(item, container);
+    });
+    return;
+  }
+
   // container.appendChild(el);
   if (typeof vnode === "string" || typeof vnode === "number") {
     const element = document.createTextNode(vnode + "");
     container.appendChild(element);
     return;
   }
+
   const element = document.createElement(vnode.tag);
   assignProps(element, vnode);
   assignEventListener(element, vnode);

@@ -1,3 +1,5 @@
+import { lowercaseFirstLetter } from "../utils/index.js";
+
 export type VNode = any;
 
 const createVNode = (tag: string | Function, props: any, ...children: any) => {
@@ -14,11 +16,24 @@ const createVNode = (tag: string | Function, props: any, ...children: any) => {
 
 const assignProps = (element: HTMLElement, vnode: VNode) => {
   if (vnode.props) {
-    Object.keys(vnode.props).forEach((prop) => {
-      element[prop] = vnode.props[prop];
-    });
+    Object.keys(vnode.props)
+      .filter((v) => !v.startsWith("on"))
+      .forEach((prop) => {
+        element[prop] = vnode.props[prop];
+      });
   }
 };
+const assignEventListener = (element: HTMLElement, vnode: VNode) => {
+  if (vnode.props) {
+    Object.keys(vnode.props)
+      .filter((v) => v.startsWith("on"))
+      .forEach((prop) => {
+        const eventName = lowercaseFirstLetter(prop.slice(2));
+        element.addEventListener(eventName, vnode.props[prop]);
+      });
+  }
+};
+
 const render = (vnode: VNode, container: HTMLElement) => {
   // container.appendChild(el);
   if (typeof vnode === "string" || typeof vnode === "number") {
@@ -28,7 +43,7 @@ const render = (vnode: VNode, container: HTMLElement) => {
   }
   const element = document.createElement(vnode.tag);
   assignProps(element, vnode);
-
+  assignEventListener(element, vnode);
   for (const child of vnode.children) {
     render(child, element);
   }

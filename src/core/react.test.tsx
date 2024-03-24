@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 /** @jsx R.createVNode */
-import { expect, test, describe, afterEach } from "vitest";
+import { expect, test, describe, afterEach, vi } from "vitest";
 import { R } from "./react";
 
 describe("react", () => {
@@ -35,6 +35,32 @@ describe("react", () => {
         .querySelector(".h2-hello")
         .textContent.includes("Hello World and Hello R!")
     ).toBeTruthy();
+  });
+
+  test("should create a text vnode", () => {
+    const vnode = R.createVNode("h1", {}, "hi");
+    expect(vnode.tag).toEqual("h1");
+  });
+
+  test("should bind event listener", () => {
+    const mockFn = vi.fn();
+    const appRoot = document.createElement("div");
+    appRoot.id = "app";
+    document.body.appendChild(appRoot);
+    const msg = "Hello World and ";
+    const App = () => <button onClick={mockFn}></button>;
+    function rerender() {
+      // todo remove this ugly depenency
+      window.stateCursor = 0;
+      R.render(<App />, appRoot);
+    }
+    (window as any).rerender = rerender;
+    (window as any).rerender();
+    const btnDom = document.querySelector("button");
+    expect(mockFn).toBeCalledTimes(0);
+    expect(btnDom).toBeTruthy();
+    btnDom.click();
+    expect(mockFn).toBeCalledTimes(1);
   });
 
   test("useState", () => {

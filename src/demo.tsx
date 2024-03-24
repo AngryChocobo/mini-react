@@ -13,6 +13,13 @@ const App = () => {
         value={value}
         onchange={(e) => setValue(e.target.value)}
       />
+      <button
+        onClick={() => {
+          console.log("clicked");
+        }}
+      >
+        点我
+      </button>
       <button onclick={() => setCount(count + 1)}>{count}</button>
     </div>
   );
